@@ -1,7 +1,7 @@
 zSlider
 =========
 
-jquery图片轮播
+jquery图片轮播插件
 
 介绍&introduce
 =========
