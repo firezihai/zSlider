@@ -1,1 +1,4 @@
-jquery插件
+zSlider
+=========
+
+jquery图片轮播
