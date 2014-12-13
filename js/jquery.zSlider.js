@@ -21,16 +21,14 @@
 			animate: 'animate',
 			direction : 'horizontal',//滚动方向,vertical重直滚动,horizontal水平滚动
 			event:"mouseover",
-			fadeIn_time:2000,
-			fadeOut_time:2000,
-			show_def_nav: true,		//是否使用默认导航
-			nav_class: 'nav',
-			nav_hover_color:'orange',	//导航激活之后的颜色
-			nav_color:'#ffffff',				//导航默认颜色
-			show_def_control : false,			//是否显示上一张下一张的控制按钮
-			control_class:'control',
-			title_fadeIn_time:2000,
-			title_fadeOut_time:2000,
+			fadeInTime:2000,
+			fadeOutTime:2000,
+			showDefNav: true,		//是否使用默认导航
+			navClass: 'nav',
+			navHoverColor:'orange',	//导航激活之后的颜色
+			navColor:'#ffffff',				//导航默认颜色
+			showDefControl : false,			//是否显示上一张下一张的控制按钮
+			controlClass:'control',
 			duration: 3000,		//播放频率
 			speed : 500,		//滚动速度
 			auto : true						//是否自动播放
@@ -41,25 +39,25 @@
 	zSlider.prototype ={
 		init : function(){
 			var that = this;//储存slider对象
-			this.item_wrap = this.$element.find('.'+this.options.item_wrap);
+			this.itemWrap = this.$element.find('.'+this.options.itemWrap);
 			this.item = this.$element.find('.'+this.options.item);
 			this.number = this.item.length;
 			this.width = this.item.first().outerWidth();
 			this.height =  this.item.first().outerHeight();
 			console.log(this.height);
 			this.$element.css({'position':'relative'});
-			this.item_wrap.css({'position':'absolute',top:'0px',left:'0px'});
+			this.itemWrap.css({'position':'absolute',top:'0px',left:'0px'});
 			if(this.options.direction == 'horizontal' && this.options.animate == 'animate'){
-				this.item_wrap.css({'width':this.width*this.number+'px'});
+				this.itemWrap.css({'width':this.width*this.number+'px'});
 				this.item.css({'float':'left'});
 			}
 			/*设置默认的导航*/
-			if(this.options.show_def_nav){
+			if(this.options.showDefNav){
 				this.createNav();
 			}
-			if(this.options.show_def_control){
-				this.$element.append('<div class="'+this.options.control_class+'"><a href="javascript:;" class="prevBtn"></a><a href="javascript:;"  class="nextBtn"></a></div>');
-				var $control = this.$element.find('.'+this.options.control_class);
+			if(this.options.showDefControl){
+				this.$element.append('<div class="'+this.options.controlClass+'"><a href="javascript:;" class="prevBtn"></a><a href="javascript:;"  class="nextBtn"></a></div>');
+				var $control = this.$element.find('.'+this.options.controlClass);
 				$control.find('a').css({'position':'absolute','width':'40px','height':'40px','cursor':'pointer','background':'orange','opacity':'0.4'});
 				var top = this.height*0.4;
 				$control.find('.prevBtn').css({'left':'10px','z-index':'4','top':top+'px'});
@@ -70,15 +68,10 @@
 				this.item.eq(0).css({'display':'block'});
 			}
 			/*获取导航元素*/
-			if(this.options.show_def_nav){
+			if(this.options.showDefNav){
 				 this.$nav = this.$element.find('.nav span');
 			}else{
-				this.$nav =this.$element.find('.'+this.options.nav_class).children();
-			}
-			if(typeof this.options.title_class != 'undefined' && this.options.title_animate == 'title_fade'){//如果标题是淡入淡出动画，强制设置第一个标题为显示
-				this.title_box =this.$element.find('.'+this.options.title_class);//标题盒
-				this.title_box.children().css({'display':'none'});
-				this.title_box.children().eq(0).css({'display':'block'});
+				this.$nav =this.$element.find('.'+this.options.navClass).children();
 			}
 			this.item.mouseover(function(){
 					clearInterval(that.$element.timer);
@@ -93,25 +86,25 @@
 			/*绑定事件*/
 			this.bind(this.options.event);
 			/*是否自动播放*/
-			if(this.options)	this.play();
+			if(this.options.auto)	this.play();
 		},
 		createNav:function(){
-				this.$element.append('<div class="'+this.options.nav_class+'"></div>');
-				var $nav = this.$element.find('.'+this.options.nav_class);
+				this.$element.append('<div class="'+this.options.navClass+'"></div>');
+				var $nav = this.$element.find('.'+this.options.navClass);
 				for(var i =1;i<=this.number;i++){
 					$nav.append('<span>●</span>')
 				}
 				$nav.css({'position':'absolute','z-index':3,'left':'50%','bottom':'20px','text-align':'center','font-size':'0','border-radius':'10px','background-color':' rgba(255,255,255,0.3)','filter': 'alpha(opacity:30)'});
-				$nav.find('span').css({'display':'inline-block','font-size':'14px','color':this.options.nav_color,'text-decoration':'none','cursor':'pointer','margin':'2px'});
+				$nav.find('span').css({'display':'inline-block','font-size':'14px','color':this.options.navColor,'text-decoration':'none','cursor':'pointer','margin':'2px'});
 				$nav.find('span:first').addClass('on');
-				$nav.find('.on').css({'color':this.options.nav_hover_color});
+				$nav.find('.on').css({'color':this.options.navHoverColor});
 				var nav_margin_left = $nav.width()*(-0.5);//获取导航margin-left的偏移量，必需先设置好span的大小之后在获取,否则获取的将是父素的宽度
 				$nav.css({'margin-left':nav_margin_left+'px'});
 		},
 		/*上一张下一张*/
 		prev_and_next: function(type){
 			var that = this;//slider对象的this储存起来,以便在jquery的函数中使用
-			this.$element.find('.'+this.options.control_class+' .'+type+'Btn').click(function(event){
+			this.$element.find('.'+this.options.controlClass+' .'+type+'Btn').click(function(event){
 					if(type =='prev'){
 						that.index--;
 					}else if(type == 'next'){
@@ -125,14 +118,14 @@
 			var that = this;
 			this.$nav.bind(type,function(){
 						that.index = that.$nav.index(this);//当前this指向的导航元素对象,例如span对象
-						if(that.options.show_def_nav){
-							that.$nav.removeClass('on').css({'color':that.options.nav_color});
-							that.$nav.eq(that.index).addClass('on').css({'color':that.options.nav_hover_color});
+						if(that.options.showDefNav){
+							that.$nav.removeClass('on').css({'color':that.options.navColor});
+							that.$nav.eq(that.index).addClass('on').css({'color':that.options.navHoverColor});
 						}else{
 							that.$nav.removeClass('on');
 							that.$nav.eq(that.index).addClass('on')
 						}
-						$(that.item_wrap).stop();//停止当前所有动面，如果没有这一句，在快速切换导航时，图片将一直切换,直到所有动画执行完并，造成效果不佳。
+						$(that.itemWrap).stop();//停止当前所有动面，如果没有这一句，在快速切换导航时，图片将一直切换,直到所有动画执行完并，造成效果不佳。
 						
 						that[that.options.animate]();//图片动画
 						clearInterval(that.$element.timer);
@@ -149,9 +142,9 @@
 			if(this.index <0){
 				this.index= this.number-1;
 			}
-			if(this.options.show_def_nav){//是否使用默认导航
-				this.$nav.removeClass('on').css({'color':this.options.nav_color});
-				this.$nav.eq(this.index).addClass('on').css({'color':this.options.nav_hover_color});
+			if(this.options.showDefNav){//是否使用默认导航
+				this.$nav.removeClass('on').css({'color':this.options.navColor});
+				this.$nav.eq(this.index).addClass('on').css({'color':this.options.navHoverColor});
 			}else{
 				this.$nav.removeClass('on');
 				this.$nav.eq(this.index).addClass('on')
@@ -167,55 +160,23 @@
 					that.sliderNext();
 				},this.options.duration);
 		},
-		title_fade:function(){
-			
-			
-			this.title_box.children(':visible').stop().fadeOut(this.options.title_fadeOut_time);
-			this.title_box.children().eq(this.index).stop().fadeIn(this.options.title_fadeOut_time);
-		},
-		title_roll:function(){
-			var that= this;
-			var title_box = that.$element.find('.'+that.options.title_class);//标题盒
-			var height = title_box.height();
-			if(that.options.direction == 'vertical'){
-					$(title_box).animate({
-						top: -height*that.index+'px'
-					},'slow');
-			}else{
-					title_box.css({'width':that.width*that.number+'px'});//设置盒宽度
-					title_box.children().css({'float':'left','width':that.width+'px','height':height+'px'});
-					$(title_box).animate({
-						left:  -that.vars.width*that.index+'px' 
-					},that.options.speed);
-			}
-		},
+
 		animate:function(){
 			var that= this;
 			if(that.options.direction == 'vertical'){
-				$(that.item_wrap).animate({
+				$(that.itemWrap).animate({
 						top: -that.height*that.index+'px'
-				},that.options.speed,function(){
-					
-					if(that.options.title_class && that.options.title_animate){
-						that[that.options.title_animate]();
-					}
-					
-				});
+				},that.options.speed);
 			}else{
-					$(that.item_wrap).animate({
+				$(that.itemWrap).animate({
 						left: -that.width*that.index+'px' 
-				},that.options.speed,function(){
-					if(that.options.title_class && that.options.title_animate){
-						that[that.options.title_animate]();
-					}
-					
-				});
+				},that.options.speed);
 			}
 		},
 		fade:function(){
 			
-			this.item_wrap.children(':visible').stop().fadeOut(this.options.fadeOut_time);
-			this.item.eq(this.index).stop().fadeIn(this.options.fadeIn_time);
+			this.itemWrap.children(':visible').stop().fadeOut(this.options.fadeOutTime);
+			this.item.eq(this.index).stop().fadeIn(this.options.fadeInTime);
 		}
 	}
 	$.fn.zSlider = function(options){
