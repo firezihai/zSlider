@@ -133,7 +133,8 @@
 							that.$nav.removeClass('on');
 							that.$nav.eq(that.index).addClass('on')
 						}
-						$(that.itemWrap).stop();//停止当前所有动面，如果没有这一句，在快速切换导航时，图片将一直切换,直到所有动画执行完并，造成效果不佳。
+						if(that.options.animate != 'fade')
+							$(that.itemWrap).stop();//停止当前所有动面，如果没有这一句，在快速切换导航时，图片将一直切换,直到所有动画执行完并，造成效果不佳。
 						
 						that[that.options.animate]();//图片动画
 						clearInterval(that.$element.timer);
@@ -183,8 +184,8 @@
 		},
 		fade:function(){
 			var that = this;
-			this.item.eq(that.index).stop(true).css({'z-index':2,'display':'block'}).animate({'opacity':1},this.options.fadeOutTime,function(){
-				that.item.eq(that.index).siblings().stop(true).css({'z-index':0,'display':'none','opacity':0});
+			this.item.eq(that.index).stop().css({'z-index':2,'display':'block'}).animate({'opacity':1},this.options.fadeOutTime,function(){
+				that.item.eq(that.index).siblings().stop().css({'z-index':0,'display':'none','opacity':0});
 				that.item.eq(that.index).css({'z-index':1});
 			})
 		}
